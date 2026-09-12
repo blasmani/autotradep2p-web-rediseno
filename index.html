@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-en="AutoTrade P2P — Your Binance P2P desk, on autopilot" data-es="AutoTrade P2P — Comercio en Binance P2P, en automático">AutoTrade P2P — Your Binance P2P desk, on autopilot</title>
+<!--
+  Los <meta> se quedan en INGLÉS y no llevan data-en / data-es. No es un olvido:
+  `idioma.js` solo escribe `innerHTML`, y en un <meta> eso no hace nada porque el
+  texto vive en el atributo `content`. Además es lo correcto: los rastreadores no
+  pulsan el conmutador, y el idioma por defecto del sitio es el inglés.
+-->
+<meta name="description" content="An assistant for Binance P2P merchants: replies to your order chat with your own templates, keeps an exportable order history and defends your price in the ads list. Two versions — a web app you can open today, and a Windows app in Store certification.">
+<meta name="author" content="AutoTrade P2P">
+<link rel="icon" href="assets/icono.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AutoTrade P2P — Your Binance P2P desk, on autopilot">
+<meta property="og:description" content="Answers your order chat with your own templates, keeps an exportable history of every trade and defends your price in the ads ranking. Available now as a web app; the Windows version is in Store certification.">
+<meta property="og:image" content="https://autotradep2p.com/assets/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--
+  DOS familias y DOS ficheros, ni uno más. Inter en variable 400..700 cubre cuerpo,
+  botones y titulares con una sola descarga; IBM Plex Mono va con UN solo corte (500)
+  porque en Google Fonts no es variable y cada peso es un fichero aparte. Cada peso
+  que se añada aquí es peso de descarga en el móvil de alguien con datos contados.
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Inter:wght@400..700&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a class="marca" href="./">AutoTrade P2P</a>
+    <nav class="cabecera__nav">
+      <a href="#que-hace" data-en="What it does" data-es="Qué hace">What it does</a>
+      <a href="#como-funciona" data-en="How it works" data-es="Cómo funciona">How it works</a>
+      <a href="#precio" data-en="Pricing" data-es="Precio">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <span class="idioma">
+      <button type="button" data-idioma="en" aria-pressed="true">EN</button>
+      <button type="button" data-idioma="es" aria-pressed="false">ES</button>
+    </span>
+  </div>
+</header>
+
+<main>
+
+<!-- ================================================================== portada -->
+<section class="portada">
+  <div class="contenedor">
+    <div class="portada__rejilla">
+      <div>
+        <!--
+          Ojo con el patrón que se repite en toda la página: el <svg> va SIEMPRE
+          FUERA del <span> traducible. `idioma.js` machaca el innerHTML de cada
+          elemento con [data-en], así que un icono metido dentro desaparece la
+          primera vez que alguien pulsa ES y ya no vuelve — sin error en consola.
+        -->
+        <span class="pastilla"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="3.5" width="18.5" height="13" rx="2.5"/><line x1="12" y1="16.5" x2="12" y2="20.25"/><line x1="8" y1="20.25" x2="16" y2="20.25"/></svg><span data-en="For <b>Binance P2P</b> merchants · Web &amp; Windows" data-es="Para comerciantes de <b>Binance P2P</b> · Web y Windows">For <b>Binance P2P</b> merchants · Web &amp; Windows</span></span>
+
+        <h1 data-en="Your P2P desk, <em>on autopilot</em>." data-es="Tu comercio P2P, <em>en automático</em>.">Your P2P desk, <em>on autopilot</em>.</h1>
+
+        <p class="entradilla" data-en="AutoTrade P2P answers your order chat with your own templates, turns months of trading into a spreadsheet your accountant can actually use, and moves your ad price only when it slips out of the band you set. Two versions, one product: the web app, which opens in your browser right now, and the Windows app, still in Store certification. You choose which one you use." data-es="AutoTrade P2P responde el chat de tus órdenes con tus propias plantillas, convierte meses de operaciones en una hoja de cálculo que tu contador puede usar de verdad y mueve el precio de tu anuncio solo cuando se sale de la banda que tú fijas. Dos versiones, un mismo producto: la app web, que abres en tu navegador ahora mismo, y la de Windows, todavía en certificación de la Store. Tú eliges cuál usas.">AutoTrade P2P answers your order chat with your own templates, turns months of trading into a spreadsheet your accountant can actually use, and moves your ad price only when it slips out of the band you set. Two versions, one product: the web app, which opens in your browser right now, and the Windows app, still in Store certification. You choose which one you use.</p>
+
+        <!--
+          CANJE-STORE (1 de 2). Mientras la ficha esté en certificación, el enlace de la
+          Store devuelve 404. No se esconde el botón —es el destino real de la versión de
+          ESCRITORIO— pero pegado a él va el chip que lo dice. El chip va INMEDIATAMENTE
+          detrás de ese <a> y no al final de la fila: al final se leía «Open the web app ·
+          In Store certification», o sea justo lo contrario de lo que quiere decir.
+
+          El segundo botón cambió de sentido el 2026-08-25. Antes llevaba a Telegram y era
+          un parche para que nadie se quedara en un callejón sin salida; ahora lleva a la
+          app WEB, que está disponible de verdad. Eso NO es temporal: desde el giro a la
+          nube el producto tiene DOS versiones y el usuario elige. Así que el día que
+          aprueben la ficha se borran el chip y la nota, y SE QUEDAN LOS DOS BOTONES.
+        -->
+        <div class="acciones">
+          <a class="boton boton--primario" href="https://apps.microsoft.com/detail/9PL6F67SSZV8">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="3" x2="12" y2="16"/><polyline points="7.5 11.5 12 16 16.5 11.5"/><path d="M20 16.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/></svg><span data-en="Get it from Microsoft Store" data-es="Consíguelo en Microsoft Store">Get it from Microsoft Store</span>
+          </a>
+          <span class="chip chip--aviso"><span data-en="In Store certification" data-es="En certificación">In Store certification</span></span>
+          <a class="boton boton--fantasma" href="https://app.autotradep2p.com/">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13.75 4.25h6v6"/><line x1="19.75" y1="4.25" x2="11" y2="13"/><path d="M18 14.25v4.25a2 2 0 0 1-2 2H5.5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4.25"/></svg><span data-en="Open the web app" data-es="Entrar a la app web">Open the web app</span>
+          </a>
+        </div>
+
+        <p class="nota" data-en="The web app works today: “Open the web app” opens it. The Windows version is still in Store certification, so the Microsoft Store button starts working the day it is approved." data-es="La app web funciona hoy: la abre «Entrar a la app web». La versión de Windows sigue en certificación de la Store, así que el botón de Microsoft Store empieza a funcionar el día que la aprueben.">The web app works today: “Open the web app” opens it. The Windows version is still in Store certification, so the Microsoft Store button starts working the day it is approved.</p>
+      </div>
+
+      <!--
+        `width` y `height` TIENEN que coincidir con el archivo (1066x896): le dan al
+        navegador la proporción antes de descargarlo y evitan que el texto salte al
+        cargar. Y el `height: auto` del CSS no es opcional: sin él, ese atributo
+        `height` manda y la imagen sale estirada. Pasó de verdad el 2026-08-19.
+
+        Los dos idiomas apuntan al mismo archivo: la ilustración es casi toda visual
+        y su poco texto está en inglés. El día que haya versión en español, se cambia
+        solo `data-img-es` y el conmutador ya la recoge.
+      -->
+      <figure>
+        <div class="lamina">
+          <img src="assets/hero.jpg"
+               data-img-en="assets/hero.jpg" data-img-es="assets/hero.jpg"
+               data-alt-en="Illustration: the app answering the order chat while the ad holds its rank among the top advertisers"
+               data-alt-es="Ilustración: la app respondiendo el chat de las órdenes mientras el anuncio mantiene su puesto entre los primeros anunciantes"
+               alt="AutoTrade P2P" width="1066" height="896" decoding="async">
+        </div>
+        <figcaption data-en="Fig. 1 — Illustration. Not a screenshot of the app." data-es="Fig. 1 — Ilustración. No es una captura de la app.">Fig. 1 — Illustration. Not a screenshot of the app.</figcaption>
+      </figure>
+    </div>
+
+    <!--
+      La tira de cifras cierra la primera pantalla. En móvil es lo que pone el precio
+      a la vista sin obligar a bajar hasta la sección de precio, que está cinco
+      pantallas más abajo.
+    -->
+    <ul class="cifras" data-revelar>
+      <li><b>30</b><span data-en="USDT per month" data-es="USDT al mes">USDT per month</span></li>
+      <li><b>7</b><span data-en="Days free" data-es="Días gratis">Days free</span></li>
+      <!--
+        Esta cifra decía «0 · Servidores nuestros». Dejó de ser cierta el día que
+        arrancó la app web, que corre en un servidor que operamos nosotros y así lo
+        dice `privacy.html` desde el 2026-08-24. Se sustituyó el 2026-08-25 por la
+        cifra que sí es cierta de las dos versiones y además es la novedad.
+      -->
+      <li><b>2</b><span data-en="Web and PC" data-es="Web y PC">Web and PC</span></li>
+      <li><b>8</b><span data-en="Languages" data-es="Idiomas">Languages</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================================================================= qué hace -->
+<section id="que-hace">
+  <div class="contenedor">
+    <p class="rotulo"><b>§ 01</b><span data-en="What it does" data-es="Qué hace">What it does</span><i></i></p>
+    <h2 data-en="Three jobs you stop doing by hand." data-es="Tres trabajos que dejas de hacer a mano.">Three jobs you stop doing by hand.</h2>
+    <p class="intro" data-en="Not a bot that trades for you. A desk assistant that handles the repetitive part and leaves every decision to you." data-es="No es un bot que opere por ti. Es un asistente que se ocupa de la parte repetitiva y te deja a ti todas las decisiones.">Not a bot that trades for you. A desk assistant that handles the repetitive part and leaves every decision to you.</p>
+
+    <div class="panel panel--3" data-revelar>
+      <article>
+        <div class="celda__icono"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 17v3.2L12.2 17"/><line x1="7.5" y1="9" x2="16.5" y2="9"/><line x1="7.5" y1="12.5" x2="13" y2="12.5"/></svg></div>
+        <h3 data-en="It answers the chat for you" data-es="Responde el chat por ti">It answers the chat for you</h3>
+        <!--
+          El cuarto disparador de esta lista aludía a un asunto interno del comercio.
+          Se cambió el 2026-08-25 por decisión del dueño, por el mismo motivo que la
+          burbuja retirada de la Fig. 2. No escribas aquí de qué trataba. El disparador
+          que hay ahora también es real: el bot pide el documento en el chat porque
+          Binance devuelve `idNumber` vacío.
+        -->
+        <p data-en="Write your own message templates and choose when each one is sent: when an order opens, when the buyer marks it paid, when a payment proof arrives, when the document number you need is still missing. A trigger is marked as handled <b>before</b> the message goes out, so a customer never gets the same notice twice." data-es="Escribe tus propias plantillas y elige cuándo se envía cada una: al abrirse una orden, cuando el comprador la marca como pagada, cuando llega un comprobante, cuando todavía falta el número de documento que necesitas. Un disparador se marca como atendido <b>antes</b> de que salga el mensaje, así que un cliente jamás recibe el mismo aviso dos veces.">Write your own message templates and choose when each one is sent: when an order opens, when the buyer marks it paid, when a payment proof arrives, when the document number you need is still missing. A trigger is marked as handled <b>before</b> the message goes out, so a customer never gets the same notice twice.</p>
+        <p class="celda__meta" data-en="Rehearsal mode included" data-es="Con modo ensayo">Rehearsal mode included</p>
+      </article>
+
+      <article>
+        <div class="celda__icono"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3.5A1.5 1.5 0 0 1 6.5 2H14l5 5v11.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5Z"/><path d="M14 2v5h5"/><line x1="8" y1="10.5" x2="16" y2="10.5"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="17.5" x2="13" y2="17.5"/></svg></div>
+        <h3 data-en="It keeps a real order history" data-es="Guarda un historial de verdad">It keeps a real order history</h3>
+        <!--
+          Aquí se prometía CSV, y era falso: el botón de CSV se retiró de la app el
+          2026-08-21 por decisión del dueño. Hoy hay DOS descargas de Excel y ninguna
+          otra: la completa, con encabezados fijos, filtros y totales, y la reducida
+          «Excel F», con las columnas justas para pegarlas en el sistema de facturación.
+          No vuelvas a escribir CSV aquí sin comprobar antes que existe el botón.
+        -->
+        <p data-en="Every order, with the counterparty's verified name, the payment method used and the detail you captured in the chat. Filter by date, asset, currency, status or order-number range, and download it as an Excel file: the full one, with frozen headers, filters and totals, or the short one, with just the columns your invoicing system needs." data-es="Cada orden, con el nombre verificado de la contraparte, el método de pago usado y el dato que capturaste en el chat. Filtra por fecha, activo, moneda, estado o rango de número de orden, y descárgalo en Excel: el completo, con encabezados fijos, filtros y totales, o el reducido, con las columnas justas para tu sistema de facturación.">Every order, with the counterparty's verified name, the payment method used and the detail you captured in the chat. Filter by date, asset, currency, status or order-number range, and download it as an Excel file: the full one, with frozen headers, filters and totals, or the short one, with just the columns your invoicing system needs.</p>
+        <p class="celda__meta" data-en="XLSX · XLSX F" data-es="XLSX · XLSX F">XLSX · XLSX F</p>
+      </article>
+
+      <article>
+        <div class="celda__icono"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11.5" width="5" height="9" rx="1"/><rect x="9.5" y="6.5" width="5" height="14" rx="1"/><rect x="16" y="14" width="5" height="6.5" rx="1"/></svg></div>
+        <h3 data-en="It defends your rank" data-es="Defiende tu puesto">It defends your rank</h3>
+        <p data-en="The pricing engine watches where your ad sits in the list and moves its price only when it actually falls out of the band you set — never chasing an exact position, which is what looks like price manipulation. It never crosses the price limits you write." data-es="El motor de precios vigila dónde está tu anuncio en la lista y mueve el precio solo cuando de verdad se sale de la banda que fijaste; nunca persigue un puesto exacto, que es lo que parece manipulación de precios. Y nunca cruza los límites que escribas.">The pricing engine watches where your ad sits in the list and moves its price only when it actually falls out of the band you set — never chasing an exact position, which is what looks like price manipulation. It never crosses the price limits you write.</p>
+        <p class="celda__meta" data-en="Interval you choose · Off by default" data-es="Intervalo que tú eliges · Apagado de fábrica">Interval you choose · Off by default</p>
+      </article>
+    </div>
+
+    <!--
+      Fig. 2 y Fig. 3 son maquetas en HTML y CSS, no capturas. Tres razones: se
+      traducen solas con el conmutador, pesan cero bytes de descarga, y no envejecen
+      el día que la app cambie de aspecto. El pie de cada una dice que son
+      ilustraciones, que es lo honesto.
+    -->
+    <div class="figuras" data-revelar>
+      <figure>
+        <div class="maqueta">
+          <div class="maqueta__barra"><span class="maqueta__punto"></span><span data-en="Order chat" data-es="Chat de la orden">Order chat</span></div>
+          <div class="maqueta__cuerpo">
+            <div class="chat">
+              <!--
+                Aquí había una tercera burbuja, del cliente, sobre un asunto interno del
+                comercio. Borrada el 2026-08-25 por decisión del dueño: eso no se alude
+                en público. No la vuelvas a poner, y no dejes escrito de qué trataba, ni
+                siquiera en un comentario —el código de este repositorio se sirve tal
+                cual y se lee con «ver código fuente»—. El diálogo funciona sin ella.
+              -->
+              <p class="chat__b" data-en="Hi, I already made the transfer." data-es="Hola, ya hice la transferencia.">Hi, I already made the transfer.</p>
+              <p class="chat__b chat__b--mio" data-en="𝗦𝗘𝗡𝗗 𝗣𝗥𝗢𝗢𝗙 𝗢𝗙 𝗣𝗔𝗬𝗠𝗘𝗡𝗧 🤳🏻📄 required before releasing." data-es="𝗘𝗡𝗩𝗜𝗔𝗥 𝗖𝗢𝗠𝗣𝗥𝗢𝗕𝗔𝗡𝗧𝗘 𝗗𝗘 𝗣𝗔𝗚𝗢 🤳🏻📄 es requisito para liberar.">𝗦𝗘𝗡𝗗 𝗣𝗥𝗢𝗢𝗙 𝗢𝗙 𝗣𝗔𝗬𝗠𝗘𝗡𝗧 🤳🏻📄 required before releasing.</p>
+              <p class="chat__pie"><span data-en="Template · 8 s" data-es="Plantilla · 8 s">Template · 8 s</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="4 12.5 8 16.5 15 9"/><polyline points="12 16.5 13 15.5"/><polyline points="16 9 20 5"/></svg></p>
+            </div>
+          </div>
+        </div>
+        <figcaption data-en="Fig. 2 — The reply goes out with your own words." data-es="Fig. 2 — La respuesta sale con tus propias palabras.">Fig. 2 — The reply goes out with your own words.</figcaption>
+      </figure>
+
+      <figure>
+        <div class="maqueta">
+          <div class="maqueta__barra"><span class="maqueta__punto"></span><span data-en="Order history" data-es="Historial de órdenes">Order history</span></div>
+          <div class="maqueta__cuerpo">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th data-en="Date" data-es="Fecha">Date</th>
+                  <th data-en="Asset" data-es="Activo">Asset</th>
+                  <th class="opcional" data-en="Type" data-es="Tipo">Type</th>
+                  <th data-en="Amount" data-es="Importe">Amount</th>
+                </tr>
+              </thead>
+              <!--
+                Aquí NO van nombres de bancos ni de billeteras. Los hubo, y se quitaron
+                el 2026-08-25: son marcas de terceros en una maqueta de portada, y esta
+                app no tiene relación con ninguna de ellas. «Tipo» sale del Excel de
+                verdad y no compromete a nadie. Tampoco los cites en un comentario: el
+                código de este repositorio se sirve tal cual y cualquiera lo lee.
+
+                Ojo: estos <td> SÍ llevan data-en/data-es porque Venta/Compra se traduce.
+                Las fechas y «USDT» no, que es lo correcto: no son texto de idioma.
+              -->
+              <tbody>
+                <tr><td>18/08</td><td>USDT</td><td class="opcional" data-en="Sell" data-es="Venta">Sell</td><td>1 250.00</td></tr>
+                <tr><td>18/08</td><td>USDT</td><td class="opcional" data-en="Sell" data-es="Venta">Sell</td><td>3 400.00</td></tr>
+                <tr><td>17/08</td><td>USDT</td><td class="opcional" data-en="Buy" data-es="Compra">Buy</td><td>890.50</td></tr>
+                <tr><td>17/08</td><td>USDT</td><td class="opcional" data-en="Sell" data-es="Venta">Sell</td><td>2 100.00</td></tr>
+              </tbody>
+            </table>
+            <!-- Las dos descargas que el comerciante puede pulsar de verdad. Eran «CSV» y
+                 «XLSX»; el botón de CSV se retiró de la app el 2026-08-21. -->
+            <div class="tabla__chips"><span class="chip">XLSX</span><span class="chip">XLSX F</span></div>
+          </div>
+        </div>
+        <figcaption data-en="Fig. 3 — Months of trading, in one file." data-es="Fig. 3 — Meses de operaciones, en un solo archivo.">Fig. 3 — Months of trading, in one file.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ cómo funciona -->
+<section id="como-funciona">
+  <div class="contenedor">
+    <p class="rotulo"><b>§ 02</b><span data-en="How it works" data-es="Cómo funciona">How it works</span><i></i></p>
+    <h2 data-en="Four steps, once." data-es="Cuatro pasos, una sola vez.">Four steps, once.</h2>
+    <!--
+      Esta entradilla decía «no tienes que crear ninguna cuenta con nosotros, porque no
+      hay un nosotros de por medio». En la app web es falso: se entra con Google y esa
+      cuenta es lo que decide de quién son las órdenes (`privacy.html` §4). Reescrita el
+      2026-08-25 alrededor de lo que sí es cierto de las dos versiones: la contraseña de
+      Binance no se pide nunca y la clave la creas y la revocas tú.
+    -->
+    <p class="intro" data-en="You never hand over a Binance password. The app talks straight to the official Binance API with a key you create yourself, inside your own account, and that you can revoke there whenever you want." data-es="Nunca entregas una contraseña de Binance. La app habla directamente con la API oficial de Binance con una clave que creas tú, dentro de tu propia cuenta, y que puedes revocar ahí cuando quieras.">You never hand over a Binance password. The app talks straight to the official Binance API with a key you create yourself, inside your own account, and that you can revoke there whenever you want.</p>
+
+    <div class="pasos" data-revelar>
+      <article class="paso">
+        <div class="paso__cab"><span class="paso__n">1</span><h3 data-en="Open it" data-es="Ábrela">Open it</h3></div>
+        <p data-en="The web app opens in your browser and you sign in with Google, with nothing to install. The Windows version installs from Microsoft Store and opens in its own window; it is still in certification." data-es="La app web se abre en tu navegador y entras con Google, sin instalar nada. La versión de Windows se instala desde Microsoft Store y se abre en su propia ventana; todavía está en certificación.">The web app opens in your browser and you sign in with Google, with nothing to install. The Windows version installs from Microsoft Store and opens in its own window; it is still in certification.</p>
+      </article>
+      <article class="paso">
+        <div class="paso__cab"><span class="paso__n">2</span><h3 data-en="Paste your API key" data-es="Pega tu clave API">Paste your API key</h3></div>
+        <p data-en="Create it in your own Binance account and paste it into Settings. In the web app it is stored encrypted, with the key that opens it kept outside the database. In the Windows version it is encrypted on your own PC and never leaves it." data-es="La creas en tu propia cuenta de Binance y la pegas en Configuración. En la app web se guarda cifrada, con la llave que la abre fuera de la base de datos. En la versión de Windows se cifra en tu propia PC y nunca sale de ahí.">Create it in your own Binance account and paste it into Settings. In the web app it is stored encrypted, with the key that opens it kept outside the database. In the Windows version it is encrypted on your own PC and never leaves it.</p>
+      </article>
+      <article class="paso">
+        <div class="paso__cab"><span class="paso__n">3</span><h3 data-en="Write your messages" data-es="Escribe tus mensajes">Write your messages</h3></div>
+        <p data-en="Adjust the ready-made templates or write your own, and pick which trigger fires each one. You can try it in rehearsal mode first." data-es="Ajusta las plantillas que vienen hechas o escribe las tuyas, y elige qué disparador lanza cada una. Puedes probarlo primero en modo ensayo.">Adjust the ready-made templates or write your own, and pick which trigger fires each one. You can try it in rehearsal mode first.</p>
+      </article>
+      <article class="paso">
+        <div class="paso__cab"><span class="paso__n">4</span><h3 data-en="Turn it on" data-es="Enciéndelo">Turn it on</h3></div>
+        <p data-en="Nothing runs until you switch it on, and it remembers the choice. In the web app the engine keeps working after you close the tab; in the Windows version it keeps answering from the system tray." data-es="Nada se pone en marcha hasta que lo enciendes, y recuerda esa decisión. En la app web el motor sigue trabajando aunque cierres la pestaña; en la versión de Windows sigue respondiendo desde la bandeja del sistema.">Nothing runs until you switch it on, and it remembers the choice. In the web app the engine keeps working after you close the tab; in the Windows version it keeps answering from the system tray.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== los límites -->
+<section class="banda">
+  <div class="contenedor">
+    <div class="banda__cab">
+      <svg class="i banda__escudo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.5 20 5.5v6c0 4.6-3.3 7.9-8 10-4.7-2.1-8-5.4-8-10v-6Z"/></svg>
+      <p class="rotulo"><b>§ 03</b><span data-en="You stay in control" data-es="El control sigue siendo tuyo">You stay in control</span><i></i></p>
+      <h2 data-en="What it will never do." data-es="Lo que nunca va a hacer.">What it will never do.</h2>
+      <p class="intro" data-en="This is the part most people ask about first, so it is written down before you sign up." data-es="Es lo que casi todo el mundo pregunta primero, así que está escrito antes de que te registres.">This is the part most people ask about first, so it is written down before you sign up.</p>
+    </div>
+
+    <div class="panel panel--2" data-revelar>
+      <div class="limite limite--no">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+        <div>
+          <div class="limite__cab"><h3 data-en="It never releases crypto" data-es="Nunca libera cripto">It never releases crypto</h3><span class="chip"><span data-en="Never" data-es="Nunca">Never</span></span></div>
+          <p data-en="Reviewing a payment proof is a human decision and it stays one: your Binance fund password is not stored anywhere, not even in memory, so no automated process could release funds even if it wanted to." data-es="Revisar un comprobante es una decisión humana y así se queda: tu contraseña de fondos de Binance no se guarda en ninguna parte, ni siquiera en memoria, así que ningún proceso automático podría liberar fondos aunque quisiera.">Reviewing a payment proof is a human decision and it stays one: your Binance fund password is not stored anywhere, not even in memory, so no automated process could release funds even if it wanted to.</p>
+        </div>
+      </div>
+
+      <div class="limite limite--no">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+        <div>
+          <div class="limite__cab"><h3 data-en="It does not buy, sell or transfer" data-es="No compra, no vende, no transfiere">It does not buy, sell or transfer</h3><span class="chip"><span data-en="Never" data-es="Nunca">Never</span></span></div>
+          <p data-en="It does not deposit or withdraw either. It is not a wallet and not an exchange, and it never takes custody of your funds." data-es="Tampoco deposita ni retira. No es un monedero ni un exchange, y nunca tiene la custodia de tus fondos.">It does not deposit or withdraw either. It is not a wallet and not an exchange, and it never takes custody of your funds.</p>
+        </div>
+      </div>
+
+      <div class="limite limite--no">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+        <div>
+          <div class="limite__cab"><h3 data-en="It gives no investment advice" data-es="No da consejos de inversión">It gives no investment advice</h3><span class="chip"><span data-en="Never" data-es="Nunca">Never</span></span></div>
+          <p data-en="It shows no market prices for speculation and tells you nothing about what to trade." data-es="No enseña precios de mercado para especular ni te dice qué operar.">It shows no market prices for speculation and tells you nothing about what to trade.</p>
+        </div>
+      </div>
+
+      <div class="limite limite--si">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.75 12.25 3 3 5.5-5.75"/></svg>
+        <div>
+          <div class="limite__cab"><h3 data-en="Only the official Binance API" data-es="Solo la API oficial de Binance">Only the official Binance API</h3><span class="chip"><span data-en="Always" data-es="Siempre">Always</span></span></div>
+          <p data-en="No scraping and no session cookies — that is what keeps your account safe." data-es="Sin scraping y sin cookies de sesión: eso es lo que mantiene tu cuenta a salvo.">No scraping and no session cookies — that is what keeps your account safe.</p>
+        </div>
+      </div>
+
+      <div class="limite limite--si ancha">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.75 12.25 3 3 5.5-5.75"/></svg>
+        <div>
+          <!--
+            Esta celda decía «Tus datos se quedan en tu PC · No operamos servidores».
+            Era cierto del producto de escritorio y es FALSO de la app web, que corre en
+            un servidor nuestro. `privacy.html` lo dice desde el 2026-08-24 y su §12
+            explica el cambio en vez de esconderlo; esta portada no podía seguir
+            diciendo lo contrario. Reescrita el 2026-08-25 para distinguir las dos
+            versiones, y sin prometer nada que la política no sostenga: la mitad
+            incómoda —de qué NO protege— está en la §9 y por eso se remite a ella.
+          -->
+          <div class="limite__cab"><h3 data-en="Where your data lives" data-es="Dónde viven tus datos">Where your data lives</h3><span class="chip"><span data-en="Encrypted" data-es="Cifrada">Encrypted</span></span></div>
+          <p data-en="In the Windows version your data stays on your own PC. In the web version it lives on servers we run, and your Binance API key is stored encrypted, with the key that opens it kept outside the database — a copy of the database on its own does not reveal it. We never ask for your Binance password, and the privacy policy also says what this does not protect you from." data-es="En la versión de Windows tus datos se quedan en tu propia PC. En la versión web viven en servidores que operamos nosotros, y tu clave API de Binance se guarda cifrada, con la llave que la abre fuera de la base de datos: una copia de la base por sí sola no la revela. Nunca te pedimos tu contraseña de Binance, y la política de privacidad dice además de qué NO te protege esto.">In the Windows version your data stays on your own PC. In the web version it lives on servers we run, and your Binance API key is stored encrypted, with the key that opens it kept outside the database — a copy of the database on its own does not reveal it. We never ask for your Binance password, and the privacy policy also says what this does not protect you from.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== precio -->
+<section id="precio">
+  <div class="contenedor">
+    <p class="rotulo"><b>§ 04</b><span data-en="Pricing" data-es="Precio">Pricing</span><i></i></p>
+    <h2 data-en="One subscription. Seven days to decide." data-es="Una suscripción. Siete días para decidir.">One subscription. Seven days to decide.</h2>
+    <!--
+      Esta entradilla decía «Lo cobra Microsoft a través de la Store» a secas, sin
+      acotar, y desde el 2026-08-25 el botón de esta misma ficha abre la app WEB, donde
+      Microsoft no cobra nada. Reescrita ese día para decir la verdad de cada versión, y
+      sin nombrar ningún procesador de pagos: `privacy.html` §8 no lista ninguno, y no
+      se inventa uno aquí.
+    -->
+    <p class="intro" data-en="In the web app the subscription is arranged directly with us: there is no automated billing yet and we never hold your card details. The Windows version will be billed by Microsoft through the Store, in your own currency, if and when it is approved." data-es="En la app web la suscripción se acuerda directamente con nosotros: todavía no hay cobro automático y nunca guardamos los datos de tu tarjeta. La versión de Windows la cobrará Microsoft a través de la Store, en tu moneda, cuando la aprueben.">In the web app the subscription is arranged directly with us: there is no automated billing yet and we never hold your card details. The Windows version will be billed by Microsoft through the Store, in your own currency, if and when it is approved.</p>
+
+    <div class="precio__rejilla" data-revelar>
+      <div class="ficha">
+        <span class="ficha__leyenda" data-en="7-day trial" data-es="7 días de prueba">7-day trial</span>
+        <div class="panel">
+          <div class="ficha__cab">
+            <!--
+              30 USDT y no 24,99 USD desde el 2026-08-25. Cambia el numero Y la moneda: se
+              cobra en USDT por Binance Pay, que es como se cobra de verdad. El suscriptor ya
+              tiene USDT -es comerciante P2P- y no hay ninguna pasarela que cobre dolares.
+            -->
+            <span class="ficha__cifra">30</span>
+            <span class="ficha__unidad" data-en="USDT / month" data-es="USDT / mes">USDT / month</span>
+          </div>
+          <dl>
+            <!--
+              Esta fila decía «7 days, no card until day 8», sin acotar, y era la única
+              del <dl> que no se había partido en Web / Windows. En la app web no hay
+              tarjeta NUNCA —no hay cobro automático y no se guardan datos de tarjeta,
+              `terms.html` §4—, así que prometer una tarjeta el día 8 era prometer algo
+              que no existe. Partida el 2026-08-25 como el resto de filas.
+            -->
+            <div class="ficha__fila"><dt data-en="Trial" data-es="Prueba">Trial</dt><dd data-en="7 days in both versions. Web: no card at any point. Windows: through the Store, once approved" data-es="7 días en las dos versiones. Web: sin tarjeta en ningún momento. Windows: por la Store, cuando la aprueben">7 days in both versions. Web: no card at any point. Windows: through the Store, once approved</dd></div>
+            <div class="ficha__fila"><dt data-en="Billing" data-es="Cobro">Billing</dt><dd data-en="Web: arranged directly with us. Windows: Microsoft Store, once approved" data-es="Web: se acuerda directamente con nosotros. Windows: Microsoft Store, cuando la aprueben">Web: arranged directly with us. Windows: Microsoft Store, once approved</dd></div>
+            <div class="ficha__fila"><dt data-en="Cancellation" data-es="Cancelación">Cancellation</dt><dd data-en="Any time. Web: tell us and it stops. Windows: from your Microsoft account, once approved" data-es="Cuando quieras. Web: nos lo dices y se acaba. Windows: desde tu cuenta Microsoft, cuando la aprueben">Any time. Web: tell us and it stops. Windows: from your Microsoft account, once approved</dd></div>
+            <div class="ficha__fila"><dt data-en="Requirements" data-es="Requisitos">Requirements</dt><dd data-en="A browser; Windows 10 or 11 for the PC app" data-es="Un navegador; Windows 10 u 11 para la app de PC">A browser; Windows 10 or 11 for the PC app</dd></div>
+            <div class="ficha__fila"><dt data-en="Plans" data-es="Planes">Plans</dt><dd data-en="One only, everything included" data-es="Uno solo, todo incluido">One only, everything included</dd></div>
+          </dl>
+          <div class="ficha__pie">
+            <!-- CANJE-STORE (2 de 2). El otro esta en la portada: buscar «CANJE-STORE».
+                 OJO: este boton YA NO lleva a la Store. Desde el 2026-08-25 lleva a la app
+                 WEB, porque es la que existe hoy y el enlace de la Store devuelve 404, y ahi
+                 se queda —la web es una de las dos versiones del producto, no un parche
+                 mientras dure la certificacion—. Lo unico que se borra el dia que aprueben
+                 la ficha es la nota de aqui debajo.
+
+                 Este <a> lleva los data-en/data-es sobre si mismo porque NO tiene icono
+                 dentro. Si algun dia se le mete un <svg>, hay que mover los atributos a un
+                 <span> hijo o `idioma.js` se come el icono al primer clic en ES. -->
+            <a class="boton boton--primario boton--ancho" href="https://app.autotradep2p.com/" data-en="Start the free trial" data-es="Empezar la prueba gratis">Start the free trial</a>
+            <p class="nota" data-en="The trial runs in the web app, in your browser. The Windows version is still in Store certification." data-es="La prueba corre en la app web, en tu navegador. La versión de Windows sigue en certificación de la Store.">The trial runs in the web app, in your browser. The Windows version is still in Store certification.</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="refuerzos">
+        <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.75 12.25 3 3 5.5-5.75"/></svg><span data-en="We never see or hold your card. In the web app the subscription is agreed with us directly; in the Windows version, if and when it is approved, Microsoft handles the payment." data-es="Nosotros no vemos ni guardamos tu tarjeta. En la app web la suscripción se acuerda directamente con nosotros; en la versión de Windows, cuando la aprueben, el pago lo gestiona Microsoft.">We never see or hold your card. In the web app the subscription is agreed with us directly; in the Windows version, if and when it is approved, Microsoft handles the payment.</span></li>
+        <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.75 12.25 3 3 5.5-5.75"/></svg><span data-en="Everything is included: chat, history with both Excel exports, and the pricing engine. No tiers and no add-ons." data-es="Todo va incluido: chat, historial con las dos exportaciones a Excel, y el motor de precios. Sin planes ni extras.">Everything is included: chat, history with both Excel exports, and the pricing engine. No tiers and no add-ons.</span></li>
+        <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.75 12.25 3 3 5.5-5.75"/></svg><span data-en="If you cancel, your history is not wiped that day: in the web app it is kept for a reasonable period so you can come back or ask for a copy, and in the Windows version it is a file on your own PC. Either way, export it to Excel whenever you want — before or after." data-es="Si cancelas, tu historial no se borra ese día: en la app web se conserva un tiempo razonable para que puedas volver o pedir una copia, y en la versión de Windows es un archivo de tu propia PC. En los dos casos puedes exportarlo a Excel cuando quieras: antes o después.">If you cancel, your history is not wiped that day: in the web app it is kept for a reasonable period so you can come back or ask for a copy, and in the Windows version it is a file on your own PC. Either way, export it to Excel whenever you want — before or after.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== faq -->
+<section id="faq">
+  <div class="contenedor">
+    <p class="rotulo"><b>§ 05</b><span data-en="FAQ" data-es="FAQ">FAQ</span><i></i></p>
+    <h2 data-en="Questions, answered." data-es="Lo que todo el mundo pregunta.">Questions, answered.</h2>
+
+    <div class="faq panel">
+      <details>
+        <summary><span data-en="Do I need to give you my Binance password?" data-es="¿Tengo que darte mi contraseña de Binance?">Do I need to give you my Binance password?</span></summary>
+        <p data-en="No, and you should never give it to anyone. AutoTrade P2P uses an <b>API key</b> that you create yourself inside your own Binance account, with the permissions you choose, and that you can revoke there at any moment. In the web app it is stored encrypted, with the key that opens it kept outside the database, so a copy of the database on its own does not reveal it. In the Windows version it is encrypted on your own PC with Windows DPAPI and tied to your Windows account: copying the files to another computer does not let anyone read them." data-es="No, y no deberías dársela a nadie. AutoTrade P2P usa una <b>clave API</b> que creas tú dentro de tu propia cuenta de Binance, con los permisos que tú elijas, y que puedes revocar ahí en cualquier momento. En la app web se guarda cifrada, con la llave que la abre fuera de la base de datos, así que una copia de la base por sí sola no la revela. En la versión de Windows se cifra en tu propia PC con DPAPI de Windows y atada a tu cuenta de Windows: copiar los archivos a otra computadora no le sirve a nadie para leerlos.">No, and you should never give it to anyone. AutoTrade P2P uses an <b>API key</b> that you create yourself inside your own Binance account, with the permissions you choose, and that you can revoke there at any moment. In the web app it is stored encrypted, with the key that opens it kept outside the database, so a copy of the database on its own does not reveal it. In the Windows version it is encrypted on your own PC with Windows DPAPI and tied to your Windows account: copying the files to another computer does not let anyone read them.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="What permissions does the API key need?" data-es="¿Qué permisos tiene que tener la clave API?">What permissions does the API key need?</span></summary>
+        <p data-en="Two, and no more: <b>Enable Reading</b>, for your orders, your ads and the chat; and <b>Enable Spot &amp; Margin Trading</b>, which is what lets it move the price of your own ads. Leave everything else off, <b>especially Enable Withdrawals</b>: the app does not use it, and leaving it off is what means that even if your key leaked, nobody could take money out of your account. You choose all of this yourself when you create the key." data-es="Dos, y ninguno más: <b>Habilitar lectura</b>, para tus órdenes, tus anuncios y el chat; y <b>Habilitar trading de Margen, Acciones y Spot</b>, que es lo que le permite mover el precio de tus propios anuncios. Deja apagado todo lo demás, <b>en especial Habilitar Retiros</b>: la app no lo usa, y dejarlo apagado es lo que hace que, aunque la clave se filtre, nadie pueda sacar el dinero de tu cuenta. Todo esto lo eliges tú al crear la clave.">Two, and no more: <b>Enable Reading</b>, for your orders, your ads and the chat; and <b>Enable Spot &amp; Margin Trading</b>, which is what lets it move the price of your own ads. Leave everything else off, <b>especially Enable Withdrawals</b>: the app does not use it, and leaving it off is what means that even if your key leaked, nobody could take money out of your account. You choose all of this yourself when you create the key.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="Can it release crypto for me?" data-es="¿Puede liberar cripto por mí?">Can it release crypto for me?</span></summary>
+        <p data-en="No, and that is deliberate. Checking that a payment really arrived is a judgement call, and the app is built so it cannot make it: your Binance fund password is never stored, so nothing automatic has what it would need." data-es="No, y es a propósito. Comprobar que un pago llegó de verdad es un juicio humano, y la app está hecha para no poder hacerlo: tu contraseña de fondos de Binance no se guarda nunca, así que nada automático tiene con qué.">No, and that is deliberate. Checking that a payment really arrived is a judgement call, and the app is built so it cannot make it: your Binance fund password is never stored, so nothing automatic has what it would need.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="What happens if I cancel?" data-es="¿Qué pasa si cancelo?">What happens if I cancel?</span></summary>
+        <p data-en="You keep using it until the period you already paid for runs out, and there is no cancellation fee either way. In the web app you tell us and the billing stops — there is no automated charge to switch off, because there is no automated billing yet. In the Windows version, once it is on the Store, Microsoft stops charging you and there is nothing to ask us for: it is a switch in your own Microsoft account." data-es="Sigues usándola hasta que termine el periodo que ya pagaste, y en los dos casos no hay penalización. En la app web nos lo dices y se acaba el cobro: no hay ningún cargo automático que apagar, porque todavía no hay cobro automático. En la versión de Windows, cuando esté en la Store, Microsoft deja de cobrarte y no hay nada que pedirnos: es un interruptor de tu propia cuenta Microsoft.">You keep using it until the period you already paid for runs out, and there is no cancellation fee either way. In the web app you tell us and the billing stops — there is no automated charge to switch off, because there is no automated billing yet. In the Windows version, once it is on the Store, Microsoft stops charging you and there is nothing to ask us for: it is a switch in your own Microsoft account.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="What happens to my history if I stop paying?" data-es="¿Qué pasa con mi historial si dejo de pagar?">What happens to my history if I stop paying?</span></summary>
+        <p data-en="Nothing is deleted the day you stop paying. In the web app your history stays in your account and is kept for a reasonable period afterwards, so you can come back or ask us for a copy — the Privacy Policy says how long we keep each thing. In the Windows version it is a file on your own PC and it stays there. Either way you can export everything to Excel before or after the subscription ends. Deleting your account is a separate decision that you make on purpose." data-es="No se borra nada el día que dejas de pagar. En la app web tu historial se queda en tu cuenta y se conserva un tiempo razonable después, para que puedas volver o pedirnos una copia; la política de privacidad dice cuánto se guarda cada cosa. En la versión de Windows es un archivo de tu propia PC y ahí se queda. En los dos casos puedes exportarlo todo a Excel antes o después de que termine la suscripción. Borrar tu cuenta es una decisión aparte, que tomas tú a propósito.">Nothing is deleted the day you stop paying. In the web app your history stays in your account and is kept for a reasonable period afterwards, so you can come back or ask us for a copy — the Privacy Policy says how long we keep each thing. In the Windows version it is a file on your own PC and it stays there. Either way you can export everything to Excel before or after the subscription ends. Deleting your account is a separate decision that you make on purpose.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="Does it work while the window is closed?" data-es="¿Funciona con la ventana cerrada?">Does it work while the window is closed?</span></summary>
+        <p data-en="Yes, in both versions. In the web app the engine runs on our servers, so closing the tab changes nothing. In the Windows version, closing the window sends it to the system tray and the engine keeps answering your order chat from there; to quit completely, right-click the tray icon and choose Exit." data-es="Sí, en las dos versiones. En la app web el motor corre en nuestros servidores, así que cerrar la pestaña no cambia nada. En la versión de Windows, al cerrar la ventana se va a la bandeja del sistema y el motor sigue respondiendo el chat de tus órdenes desde ahí; para cerrarla del todo, clic derecho en el icono de la bandeja y «Salir».">Yes, in both versions. In the web app the engine runs on our servers, so closing the tab changes nothing. In the Windows version, closing the window sends it to the system tray and the engine keeps answering your order chat from there; to quit completely, right-click the tray icon and choose Exit.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="Does it work with the PC turned off?" data-es="¿Funciona con la PC apagada?">Does it work with the PC turned off?</span></summary>
+        <p data-en="With the web app, yes: the engine runs on our servers, so your order chat keeps being answered while your PC is off or asleep. With the Windows version, no: everything runs on your own machine, and nobody but you holds your key. That is the trade-off between the two, and the privacy policy spells out both sides of it." data-es="Con la app web sí: el motor corre en nuestros servidores, así que el chat de tus órdenes se sigue respondiendo con la PC apagada o suspendida. Con la versión de Windows no: todo corre en tu propio equipo, y nadie más que tú tiene tu clave. Ese es el intercambio entre las dos, y la política de privacidad cuenta las dos caras.">With the web app, yes: the engine runs on our servers, so your order chat keeps being answered while your PC is off or asleep. With the Windows version, no: everything runs on your own machine, and nobody but you holds your key. That is the trade-off between the two, and the privacy policy spells out both sides of it.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="Is it affiliated with Binance?" data-es="¿Tiene relación con Binance?">Is it affiliated with Binance?</span></summary>
+        <p data-en="No. AutoTrade P2P is an independent product and is not endorsed by, sponsored by or affiliated with Binance. It simply uses Binance's official public API with your own key." data-es="No. AutoTrade P2P es un producto independiente y no está respaldado, patrocinado ni afiliado a Binance. Simplemente usa la API pública oficial de Binance con tu propia clave.">No. AutoTrade P2P is an independent product and is not endorsed by, sponsored by or affiliated with Binance. It simply uses Binance's official public API with your own key.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="What languages does the app speak?" data-es="¿En qué idiomas está la app?">What languages does the app speak?</span></summary>
+        <p data-en="Eight: English, Spanish, Portuguese, Chinese (Simplified), Hindi, Russian, French and German. You change it from the side menu, in either version." data-es="Ocho: inglés, español, portugués, chino simplificado, hindi, ruso, francés y alemán. Lo cambias desde el menú lateral, en las dos versiones.">Eight: English, Spanish, Portuguese, Chinese (Simplified), Hindi, Russian, French and German. You change it from the side menu, in either version.</p>
+      </details>
+
+      <details>
+        <summary><span data-en="How do I send a suggestion or report a problem?" data-es="¿Cómo mando una sugerencia o aviso de un problema?">How do I send a suggestion or report a problem?</span></summary>
+        <p data-en="There is a <b>Suggestions</b> section in the app's side menu that writes the message for you and opens Telegram, where you can attach screenshots. Or write directly to <a href='https://t.me/AutoTradeP2P'>t.me/AutoTradeP2P</a>." data-es="Hay una sección de <b>Sugerencias</b> en el menú lateral de la app que te escribe el mensaje y abre Telegram, donde puedes adjuntar capturas. O escribe directamente a <a href='https://t.me/AutoTradeP2P'>t.me/AutoTradeP2P</a>.">There is a <b>Suggestions</b> section in the app's side menu that writes the message for you and opens Telegram, where you can attach screenshots. Or write directly to <a href='https://t.me/AutoTradeP2P'>t.me/AutoTradeP2P</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie">
+  <div class="pie__filete"></div>
+  <div class="contenedor pie__dentro">
+    <div class="pie__rejilla">
+      <div class="pie__grupo">
+        <a class="marca" href="./"><img src="assets/icono.png" alt="" width="26" height="26">AutoTrade P2P</a>
+        <p data-en="An assistant for Binance P2P merchants. Two versions: a web app in your browser, and a Windows app on your own PC." data-es="Un asistente para comerciantes de Binance P2P. Dos versiones: una app web en tu navegador y una app de Windows en tu propia PC.">An assistant for Binance P2P merchants. Two versions: a web app in your browser, and a Windows app on your own PC.</p>
+      </div>
+      <div class="pie__grupo">
+        <h4 data-en="Product" data-es="Producto">Product</h4>
+        <ul>
+          <li><a href="#que-hace" data-en="What it does" data-es="Qué hace">What it does</a></li>
+          <li><a href="#como-funciona" data-en="How it works" data-es="Cómo funciona">How it works</a></li>
+          <li><a href="#precio" data-en="Pricing" data-es="Precio">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="pie__grupo">
+        <h4 data-en="Legal" data-es="Legal">Legal</h4>
+        <ul>
+          <li><a href="privacy.html" data-en="Privacy Policy" data-es="Política de privacidad">Privacy Policy</a></li>
+          <li><a href="terms.html" data-en="Terms &amp; Conditions" data-es="Términos y condiciones">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div class="pie__grupo">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <ul>
+          <li><a href="https://t.me/AutoTradeP2P"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 3 14.5 20.75 11 13 3.25 9.5Z"/><line x1="21" y1="3" x2="11" y2="13"/></svg>Telegram</a></li>
+          <!-- El enlace de la app web va ANTES que el de la Store a propósito: es el que
+               funciona hoy. El de la Store devuelve 404 hasta que aprueben la ficha, y aun
+               así se queda, porque es el destino de la versión de escritorio. -->
+          <li><a href="https://app.autotradep2p.com/" data-en="Web app" data-es="App web">Web app</a></li>
+          <li><a href="https://apps.microsoft.com/detail/9PL6F67SSZV8">Microsoft Store</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      Segundo conmutador de idioma, al final del scroll. `idioma.js` recorre TODOS los
+      `.idioma button` del documento, así que este funciona sin tocar una línea de JS
+      y se mantiene sincronizado con el de la cabecera. Está aquí porque es donde lo
+      busca quien no lo encontró arriba, y en móvil queda al alcance del pulgar.
+    -->
+    <div class="pie__abajo">
+      <span>© 2026 AutoTrade P2P</span>
+      <span class="pie__idioma">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a13 13 0 0 0 0 18 13 13 0 0 0 0-18"/></svg>
+        <span class="idioma">
+          <button type="button" data-idioma="en" aria-pressed="true">EN</button>
+          <button type="button" data-idioma="es" aria-pressed="false">ES</button>
+        </span>
+      </span>
+    </div>
+
+    <p class="pie__descargo" data-en="AutoTrade P2P is an independent product and is not endorsed by, sponsored by or affiliated with Binance. “Binance” is a trademark of its respective owner. Trading cryptocurrency carries risk; this app provides no investment advice and never executes trades or moves funds on your behalf." data-es="AutoTrade P2P es un producto independiente y no está respaldado, patrocinado ni afiliado a Binance. «Binance» es una marca de su respectivo propietario. Operar con criptomonedas conlleva riesgo; esta app no da consejos de inversión y nunca ejecuta operaciones ni mueve fondos por ti.">AutoTrade P2P is an independent product and is not endorsed by, sponsored by or affiliated with Binance. “Binance” is a trademark of its respective owner. Trading cryptocurrency carries risk; this app provides no investment advice and never executes trades or moves funds on your behalf.</p>
+  </div>
+</footer>
+
+<script src="assets/idioma.js"></script>
+</body>
+</html>

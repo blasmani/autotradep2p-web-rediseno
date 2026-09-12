@@ -1,0 +1,1040 @@
+/* ============================================================================
+ * AutoTrade P2P — sitio web. Rediseño «Mesa de Control», 2026-08-20.
+ *
+ * El dueño pidió tres cosas: «diseño premium estilo Apple», «no uses emojis, eso
+ * le hace ver como algo muy simple, usa iconos premium en toda la página» y
+ * «mejorar el diseño». Lo que sigue es la respuesta, y la idea que la sostiene es
+ * que esto es una herramienta que toca dinero de verdad: lo premium aquí es la
+ * PRECISIÓN, no el espectáculo. Nada rebota, nada se levanta al pasar el ratón,
+ * nada late en bucle. La página se lee como un instrumento bien hecho.
+ *
+ * REGLA QUE NO SE PUEDE ROMPER, Y QUE NO DA ERROR EN CONSOLA CUANDO SE ROMPE:
+ *   `idioma.js` hace  n.innerHTML = n.getAttribute('data-' + idioma)  sobre CADA
+ *   elemento con [data-en]. Cualquier <svg> que quede DENTRO de un elemento
+ *   traducido desaparece la primera vez que alguien pulsa ES, y ya no vuelve.
+ *   El SVG va SIEMPRE como HERMANO del <span> traducido, jamás dentro.
+ *     BIEN : <p class="fila"><svg class="i">…</svg><span data-en="…" data-es="…">…</span></p>
+ *     MAL  : <p data-en="…" data-es="…"><svg>…</svg>texto</p>
+ *
+ * La paleta sigue saliendo de la propia app —medida sobre el Portal del Comerciante
+ * de Binance el 2026-08-11— porque lo primero que hace quien llega es comparar la
+ * web con las capturas. Lo que cambia es CÓMO se usa: el amarillo RELLENO aparece
+ * una vez por pantalla y punto. Antes estaba a la vez en el botón, en el conmutador
+ * de idioma y en los cuatro círculos de los pasos, y cuatro acentos a la vez no son
+ * un acento.
+ * ========================================================================== */
+
+:root {
+  /* --- planos. Cuatro escalones que SÍ se distinguen: 07 → 0b → 14 → 1b ----- */
+  --fondo: #07090c;          /* la página */
+  --marco: #0b0e11;          /* banda de límites y pie. Es el --armazon de la app */
+  --superficie: #14171c;     /* celda de panel */
+  --superficie-2: #1b1f26;   /* hover de celda, cabecera de la ficha de precio */
+
+  /* --- filetes. HEX sólidos, no rgba: el mismo valor sobre los cuatro planos - */
+  --linea: #21262e;          /* separador interior de panel */
+  --linea-fuerte: #2b3139;   /* contorno exterior de panel (el --borde de la app) */
+  --linea-control: #606468;  /* el ÚNICO borde que identifica un control.
+                                3,34:1 sobre --fondo. WCAG 1.4.11 pide 3:1 y el
+                                pelo de 1px que había antes daba 1,5 */
+  --brillo: rgba(255, 255, 255, 0.055);  /* inset 0 1px 0 — toda la elevación */
+
+  /* --- texto. Contraste ALTO de tamaño, BAJO de color ---------------------- */
+  --texto: #eaecef;          /* 16,35:1 sobre --fondo */
+  --texto-2: #b7bdc6;        /* 10,24:1. Párrafos. El #9c9c9c de antes se leía apagado */
+  --texto-3: #848e9c;        /*  5,83:1. SOLO mono ≥12px. Nunca un párrafo largo */
+
+  /* --- acento --------------------------------------------------------------- */
+  --amarillo: #fcd535;
+  --amarillo-logo: #f0b90b;  /* 10,74:1. Rótulos, números de paso, iconos */
+  --sobre-amarillo: #202630; /* 10,65:1 dentro del botón */
+  --amarillo-8: rgba(252, 213, 53, 0.08);
+  --amarillo-10: rgba(252, 213, 53, 0.1);
+  --verde: #0ecb81;          /* 9,38:1. SOLO trazo de icono */
+  --rojo: #f6465d;           /* 5,65:1. SOLO trazo de icono */
+  --tinte: rgba(255, 255, 255, 0.04);   /* fondo de chip neutro → #1d2025 */
+
+  /* --- tipografía ----------------------------------------------------------- */
+  --sans: 'Inter', 'Inter respaldo', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', 'Cascadia Mono', Consolas, ui-monospace, monospace;
+
+  --t-h1: clamp(2.5rem, 1.05rem + 6.1vw, 5rem);              /* 40px @375 · 80px desde 1036 */
+  --t-h2: clamp(2rem, 1.3rem + 3vw, 3.25rem);                /* 32px @375 · 52px desde 1040 */
+  --t-h3: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);         /* 18 → 20px */
+  --t-entradilla: clamp(1.0625rem, 1rem + 0.45vw, 1.3125rem);/* 17 → 21px */
+  --t-cuerpo: 1.0625rem;     /* 17px. Suelo de lectura: los 15px de antes dejaban
+                                la página entera por debajo de lo cómodo en móvil */
+  --t-celda: 1rem;           /* 16px, párrafo dentro de celda de panel */
+  --t-micro: 0.8125rem;      /* 13px: pie de figura, legal, ©, notas */
+  --t-mono: 0.75rem;         /* 12px: rótulos, chips. SUELO ABSOLUTO del sitio */
+  --t-precio: clamp(2.75rem, 1.6rem + 3.5vw, 4rem);          /* 44px @375 · 64px desde 1097 */
+  --t-cifra: 1.25rem;
+
+  /* --- espaciado. Escala de 4, sin valores fuera de ella -------------------- */
+  --e1: 4px;  --e2: 8px;  --e3: 12px; --e4: 16px; --e5: 20px;
+  --e6: 24px; --e7: 32px; --e8: 48px; --e9: 64px;
+
+  --gutter: clamp(20px, 5vw, 40px);  /* 5vw@375 = 18,75 < 20 ⇒ 20,000px exactos */
+  --ancho: 1160px;
+  --aire: clamp(3.5rem, 2rem + 5vw, 5.5rem);  /* 56px @375 · 88px desde 1120.
+                                Es la mitad de la separacion entre secciones: dos
+                                secciones seguidas suman 112px en movil y 176 en
+                                escritorio. Con los 128 de la primera version sumaban
+                                256 y la pagina tenia huecos, no aire. */
+
+  /* --- formas ---------------------------------------------------------------- */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;              /* TECHO. Un radio mayor sobre una superficie de
+                                1160px lee a app de móvil, no a instrumento */
+  --sombra-panel: 0 24px 60px -34px rgba(0, 0, 0, 0.95);
+
+  /* --- movimiento ------------------------------------------------------------ */
+  --sal: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rap: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * Respaldo con métricas de Inter.
+ *
+ * Sin esto, mientras la fuente se descarga el titular se compone con Segoe UI, que
+ * es más ancha, y al llegar Inter la maqueta SALTA porque el h1 cambia de número de
+ * líneas. `size-adjust` iguala el ancho medio de carácter (Inter 0,4854em contra
+ * Segoe UI 0,5210em) y los overrides igualan la caja vertical.
+ */
+@font-face {
+  font-family: 'Inter respaldo';
+  src: local('Segoe UI Variable Text'), local('Segoe UI'), local('Roboto');
+  size-adjust: 93%;
+  ascent-override: 96.9%;
+  descent-override: 24.2%;
+  line-gap-override: 0%;
+}
+
+/* ---------------------------------------------------------------------- base */
+
+* { box-sizing: border-box; }
+
+/*
+ * `clip`, NUNCA `hidden`: `overflow-x: hidden` obliga al navegador a poner
+ * `overflow-y: auto`, y eso rompe el `position: sticky` de la cabecera sin decir
+ * nada. Es un guardián: si alguna vez se cuela un bloque más ancho que la pantalla,
+ * el móvil no se queda con scroll lateral.
+ */
+html, body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 400 var(--t-cuerpo)/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a { color: var(--amarillo-logo); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/*
+ * El fichero anterior tenía CERO declaraciones de foco en 341 líneas: quien navega
+ * con teclado no veía dónde estaba. `outline-offset: 3px` deja el anillo FUERA del
+ * relleno del botón amarillo, así que se ve también encima de él.
+ */
+:focus-visible {
+  outline: 2px solid var(--amarillo);
+  outline-offset: 3px;
+  border-radius: inherit;
+}
+
+img { max-width: 100%; }
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Todos los iconos del sitio. Los tamaños mayores los ponen las clases de contexto. */
+.i { width: 1.25rem; height: 1.25rem; flex: none; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+
+h1 {
+  font-size: var(--t-h1);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin-bottom: var(--e5);
+}
+h1 em { font-style: normal; color: var(--amarillo); }
+
+h2 {
+  font-size: var(--t-h2);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--e4);
+}
+
+section { padding-block: var(--aire); }
+
+/*
+ * Rótulo de sección: mono en versalitas, el número en amarillo, y un filete que
+ * sangra hasta el borde del contenedor. Es lo que hace que la página se lea como un
+ * documento numerado y no como una sucesión de bloques sueltos.
+ * El <i> es HERMANO del <span> traducible: dentro, el innerHTML se lo comería.
+ */
+.rotulo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 var(--e4);
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+.rotulo b { color: var(--amarillo-logo); font-weight: 500; }
+.rotulo i { flex: 1; height: 1px; background: var(--linea); display: block; }
+
+.intro {
+  color: var(--texto-2);
+  max-width: 44rem;
+  margin: 0 0 var(--e8);
+  font-size: var(--t-entradilla);
+  line-height: 1.55;
+  letter-spacing: -0.011em;
+}
+
+/* ------------------------------------------------------------------ cabecera */
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /*
+   * Opaco PRIMERO. En hardware sin `backdrop-filter` un fondo translúcido deja el
+   * contenido leyéndose a través de la cabecera, y no hay forma de detectarlo desde
+   * aquí. El translúcido solo se activa donde se sabe que funciona, y solo en
+   * pantallas anchas: el blur permanente a todo el ancho es la causa número uno de
+   * scroll a tirones en Android de gama media.
+   */
+  background: rgba(7, 9, 12, 0.94);
+  border-bottom: 1px solid var(--linea);
+  padding-top: env(safe-area-inset-top);
+}
+@supports (backdrop-filter: blur(1px)) {
+  @media (min-width: 641px) {
+    .cabecera {
+      background: rgba(7, 9, 12, 0.72);
+      backdrop-filter: blur(16px) saturate(140%);
+    }
+  }
+}
+.cabecera__fila { display: flex; align-items: center; gap: var(--e4); height: 60px; }
+@media (min-width: 900px) { .cabecera__fila { height: 68px; } }
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--texto);
+  letter-spacing: -0.02em;
+}
+.marca:hover { text-decoration: none; }
+.marca img { width: 26px; height: 26px; border-radius: 7px; }
+/*
+ * El logo es un ENLACE al inicio, asi que tambien es una diana tactil. Con solo el
+ * alto del icono medía 24-26px; con este relleno pasa de 44. Medido en el navegador:
+ * era uno de los dos unicos controles del sitio por debajo del minimo.
+ *
+ * El otro es el enlace `t.me/AutoTradeP2P` que va DENTRO de una frase del FAQ, y ese
+ * se queda a 20px a proposito: WCAG 2.5.8 exceptua expresamente los enlaces en linea
+ * dentro de un parrafo, y agrandarlo partiria el renglon.
+ */
+.marca { padding-block: 10px; }
+
+.cabecera__nav { margin-left: auto; display: flex; align-items: center; gap: var(--e1); }
+.cabecera__nav a {
+  color: var(--texto-2);
+  font-size: 15px;
+  padding: 10px 12px;
+  transition: color 160ms var(--rap);
+}
+.cabecera__nav a:hover { color: var(--texto); text-decoration: none; }
+
+/*
+ * Conmutador EN/ES. Antes la mitad activa era una pastilla amarilla RELLENA y
+ * competía de tú a tú con el botón de comprar, que es el único relleno que debería
+ * haber en pantalla. Ahora el activo se marca con un subrayado de 2px y el texto en
+ * amarillo: 11,82:1, se distingue igual y ya no discute con el CTA.
+ *
+ * 44px de alto no es negociable: en móvil este es el ÚNICO control de la cabecera,
+ * porque los cuatro enlaces se ocultan. Si no se puede pulsar, el visitante que no
+ * lee inglés no tiene forma de cambiar el idioma.
+ */
+.idioma {
+  display: inline-flex;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--superficie);
+}
+.cabecera .idioma { margin-left: auto; }
+.idioma button {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--texto-3);
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  min-height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: color 160ms var(--rap), background-color 160ms var(--rap);
+}
+.idioma button:hover { color: var(--texto-2); }
+.idioma button[aria-pressed='true'] {
+  color: var(--amarillo);
+  background: var(--amarillo-10);
+  box-shadow: inset 0 -2px 0 var(--amarillo);
+}
+
+/* -------------------------------------------------------- botones y pastillas */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: var(--r-md);
+  padding: 13px 22px;
+  min-height: 48px;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 160ms var(--rap), border-color 160ms var(--rap),
+              transform 160ms var(--rap);
+}
+.boton:hover { text-decoration: none; }
+.boton:active { transform: translateY(1px); }
+.boton .i { transition: transform 180ms var(--rap); }
+.boton:hover .i { transform: translateX(2px); }
+
+.boton--primario { background: var(--amarillo); color: var(--sobre-amarillo); }
+.boton--primario:hover { background: #ffe05a; }
+.boton--fantasma {
+  border-color: var(--linea-control);   /* 3,34:1 — el pelo de 1px anterior daba 1,5
+                                           y de hecho el botón no tenía borde visible */
+  color: var(--texto);
+  background: transparent;
+}
+.boton--fantasma:hover { background: rgba(255, 255, 255, 0.045); border-color: #7b8087; }
+.boton--ancho { width: 100%; }
+
+.pastilla {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  color: var(--texto-2);
+  font-size: 13px;
+  padding: 7px 15px 7px 12px;
+  border-radius: 999px;
+  margin-bottom: var(--e5);
+}
+.pastilla b { color: var(--texto); font-weight: 600; }
+.pastilla .i { width: 16px; height: 16px; color: var(--texto-3); }
+
+/*
+ * Chip neutro. Sustituye al emoji ⏳ que abría la nota de certificación: el dueño
+ * pidió cero emojis, y un punto de 6px dice «en curso» igual de bien sin que la
+ * página parezca un mensaje de chat.
+ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+  background: var(--tinte);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-sm);
+  padding: 8px 11px;
+}
+.chip--aviso { color: var(--texto-3); }
+.chip--aviso::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--amarillo);
+  flex: none;
+}
+
+.nota { font-size: var(--t-micro); color: var(--texto-3); margin: var(--e4) 0 0; max-width: 34rem; }
+
+/* -------------------------------------------------------------------- portada */
+
+.portada { padding-block: clamp(40px, 8vw, 88px) 0; }
+.portada__rejilla { display: grid; gap: clamp(36px, 5vw, 64px); align-items: center; }
+@media (min-width: 960px) {
+  /* 960 y no 900: a 900 la columna derecha estrangula el titular a tres líneas. */
+  .portada__rejilla { grid-template-columns: 1.05fr 1fr; }
+}
+
+.entradilla {
+  font-size: var(--t-entradilla);
+  line-height: 1.55;
+  letter-spacing: -0.011em;
+  color: var(--texto-2);
+  margin: 0 0 var(--e7);
+  max-width: 36rem;
+}
+
+.acciones { display: flex; flex-wrap: wrap; gap: var(--e3); align-items: center; }
+
+/*
+ * Tira de cuatro cifras. Va debajo del hero entero y a todo el ancho, cerrando la
+ * primera pantalla: en móvil es lo que pone el precio a la vista sin obligar a
+ * bajar hasta la sección de precio.
+ *
+ * Aquí NO se publica la comisión ni los topes del motor de precios: la comisión
+ * viene en el anuncio y cambia por comerciante, y los topes son configurables.
+ * Publicar un número configurable como si fuera una promesa compromete al producto.
+ */
+.cifras {
+  list-style: none;
+  margin: var(--e8) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-lg);
+  background: var(--superficie);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 var(--brillo);
+}
+.cifras li { padding: var(--e5); border-top: 1px solid var(--linea); }
+.cifras li:nth-child(-n + 2) { border-top: 0; }
+.cifras li:nth-child(2n) { border-left: 1px solid var(--linea); }
+@media (min-width: 760px) {
+  .cifras { grid-template-columns: repeat(4, 1fr); }
+  .cifras li { border-top: 0; border-left: 1px solid var(--linea); padding: var(--e6) var(--e7); }
+  .cifras li:first-child { border-left: 0; }
+}
+.cifras b {
+  display: block;
+  font-size: var(--t-cifra);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.cifras span {
+  display: block;
+  margin-top: var(--e1);
+  font: 500 var(--t-mono)/1.4 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+
+/* ------------------------------------------------------------------- láminas */
+
+/*
+ * La ilustración tiene FONDO CLARO y la página es oscura. Ese choque había que
+ * resolverlo, y NO con `filter`: `brightness` sobre un render con degradados lo
+ * ensucia, `invert` convertiría el verde y el rojo de mercado en magenta y cian, y
+ * `mix-blend-mode: luminosity` la dejaría de un gris muerto.
+ *
+ * Lo resuelven dos capas que COMPONEN, sin repintar nada:
+ *
+ * 1. El marco es OSCURO, no blanco. Medido sobre el archivo real: el borde superior
+ *    del JPG es #e0dfe4-#e6e6e8, pero el INFERIOR es #9399a5 —un escritorio gris—.
+ *    Un passe-partout blanco haría costura garantizada en la mitad de abajo.
+ * 2. Un velo en degradado hunde ese canto inferior en la página y apaga el brillo
+ *    del borde superior. Medido: el píxel más claro del JPG (#eff1f0, luminancia
+ *    0,88) baja a ~#cacccc (0,60), por DEBAJO del amarillo del botón (0,685). O
+ *    sea: la ilustración deja de ser lo más brillante de la pantalla y el botón de
+ *    comprar pasa a serlo, que es el objetivo entero.
+ *
+ * Si en alguna pantalla se sigue viendo el corte de abajo, el único mando que hay
+ * que tocar es el 0.62 del último tramo: a 0.72 el canto se compone a #2e3137.
+ */
+.lamina {
+  position: relative;
+  padding: 8px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, #20242c, #14171c);
+  border: 1px solid var(--linea-fuerte);
+  box-shadow: inset 0 1px 0 var(--brillo),
+              0 40px 90px -50px #000,
+              0 0 80px 18px rgba(252, 213, 53, 0.055);
+}
+.lamina img {
+  width: 100%;
+  height: auto;          /* sin esto el atributo `height` del <img> manda y la
+                            imagen sale estirada: pasó de verdad el 2026-08-19 */
+  display: block;
+  border-radius: 6px;    /* 14 − 8 de relleno = 6, concéntrico con el marco */
+}
+.lamina::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 6px;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(7, 9, 12, 0.16) 0%,
+    rgba(7, 9, 12, 0) 22%,
+    rgba(7, 9, 12, 0) 58%,
+    rgba(7, 9, 12, 0.62) 100%);
+}
+
+figure { margin: 0; }
+figcaption {
+  font: 500 var(--t-micro)/1.5 var(--mono);
+  color: var(--texto-3);
+  margin-top: var(--e3);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------- paneles */
+
+/*
+ * El patrón que se repite en toda la página: un contorno, y celdas separadas por
+ * filetes de 1px. Gira de vertical a horizontal en el breakpoint SIN cambiar el
+ * HTML y sin filetes dobles.
+ *
+ * Se hace con `border-top` / `border-left` por celda y NO con `gap: 1px` sobre un
+ * fondo: con `gap` de 1px, en Windows al 125 % o al 150 % de escalado unos
+ * separadores salen a 1 píxel y otros a 2, y el panel se ve descuadrado.
+ */
+.panel {
+  display: grid;
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 var(--brillo), var(--sombra-panel);
+}
+.panel > * {
+  border-top: 1px solid var(--linea);
+  padding: var(--e6) var(--e5);
+  transition: background-color 200ms var(--rap);
+}
+.panel > *:first-child { border-top: 0; }
+/* Sin `lift`, sin `scale`: una tarjeta que se levanta es lo contrario de solidez. */
+.panel > *:hover { background: var(--superficie-2); }
+
+@media (min-width: 860px) {
+  .panel--3 { grid-template-columns: repeat(3, 1fr); }
+  .panel--3 > * { border-top: 0; border-left: 1px solid var(--linea); padding: var(--e7); }
+  .panel--3 > *:first-child { border-left: 0; }
+}
+@media (min-width: 820px) {
+  .panel--2 { grid-template-columns: 1fr 1fr; }
+  .panel--2 > * { border-left: 1px solid var(--linea); }
+  .panel--2 > *:nth-child(-n + 2) { border-top: 0; }
+  .panel--2 > *:nth-child(odd) { border-left: 0; }
+  .panel--2 > .ancha { grid-column: 1 / -1; }
+}
+
+.celda__icono {
+  width: 44px; height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: var(--superficie-2);
+  border: 1px solid var(--linea);
+  color: var(--amarillo-logo);
+  margin-bottom: var(--e4);
+}
+.celda__icono .i { width: 22px; height: 22px; }
+.panel h3 { font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.015em; margin-bottom: var(--e2); line-height: 1.3; }
+.panel p { margin: 0; color: var(--texto-2); font-size: var(--t-celda); }
+.panel--3 > * { display: flex; flex-direction: column; }
+.celda__meta {
+  margin-top: auto;
+  padding-top: var(--e4);
+  font: 500 var(--t-mono)/1.4 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+
+/* ------------------------------------------------- maquetas (Fig. 2 y Fig. 3) */
+
+/*
+ * Dos maquetas hechas en HTML y CSS, no capturas: se traducen con el conmutador,
+ * pesan cero bytes de descarga y no envejecen cuando la app cambia de aspecto. El
+ * pie de figura dice que son ilustraciones, que es lo honesto.
+ */
+.figuras { display: grid; gap: var(--e4); margin-top: var(--e4); }
+@media (min-width: 900px) { .figuras { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+.maqueta {
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 var(--brillo), var(--sombra-panel);
+}
+.maqueta__barra {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  padding: 0 var(--e4);
+  height: 42px;
+  border-bottom: 1px solid var(--linea);
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  background: var(--superficie-2);
+}
+.maqueta__punto { width: 6px; height: 6px; border-radius: 50%; background: var(--verde); flex: none; }
+.maqueta__cuerpo { padding: var(--e4); }
+
+/* Fig. 2 — chat */
+.chat { display: grid; gap: 10px; }
+.chat__b {
+  max-width: 82%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  background: var(--superficie-2);
+  border: 1px solid var(--linea);
+  color: var(--texto-2);
+}
+.chat__b--mio {
+  margin-left: auto;
+  background: var(--amarillo-8);
+  border-color: rgba(252, 213, 53, 0.22);
+  color: var(--texto);
+}
+.chat__pie {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.06em;
+  color: var(--texto-3);
+}
+.chat__pie .i { width: 13px; height: 13px; color: var(--verde); }
+
+/* Fig. 3 — historial */
+.tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla th {
+  text-align: left;
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  padding: 0 0 10px;
+}
+.tabla td { padding: 9px 0; border-top: 1px solid var(--linea); color: var(--texto-2); }
+.tabla td:last-child, .tabla th:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--texto); }
+/* Bajo 560px se va la columna «Tipo». Nunca scroll horizontal. (Decía «método de
+   pago»: esa columna se cambió por Tipo y el comentario se quedó atrás.) */
+@media (max-width: 560px) { .tabla .opcional { display: none; } }
+.tabla__chips { display: flex; gap: var(--e2); margin-top: var(--e4); }
+.tabla__chips .chip { padding: 6px 10px; }
+
+/* ------------------------------------------------------------ cómo funciona */
+
+.pasos { display: grid; gap: var(--e6); position: relative; }
+@media (min-width: 880px) {
+  .pasos { grid-template-columns: repeat(4, 1fr); gap: var(--e5); }
+  /* El hilo que une los cuatro pasos. Nace en amarillo y se apaga: dice «esto
+     empieza aquí» sin necesidad de una flecha. */
+  .pasos::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: 16px; right: 16px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--amarillo-logo), var(--linea) 30%, var(--linea) 70%, transparent);
+    z-index: 0;
+  }
+}
+.paso { position: relative; z-index: 1; }
+.paso__cab { display: flex; align-items: center; gap: var(--e3); margin-bottom: var(--e3); }
+.paso__n {
+  width: 32px; height: 32px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--linea-fuerte);
+  background: var(--fondo);   /* opaco: tapa el hilo que pasa por detrás */
+  color: var(--amarillo-logo);
+  font: 500 14px/1 var(--mono);
+}
+.paso h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.paso p { margin: 0; color: var(--texto-2); font-size: var(--t-celda); }
+
+/*
+ * El numero baja a su propia linea en escritorio.
+ *
+ * Con numero y titulo en la misma fila, el hilo que une los cuatro pasos —que va a
+ * la altura del centro del cuadrado— pasaba por detras del TEXTO del titulo y lo
+ * dejaba tachado. El cuadrado es opaco y se salva; las letras no. Medido en la
+ * captura de 1440px: «Install it» salia con una raya en medio.
+ *
+ * Y esta regla tiene que ir DESPUES de la base, no dentro del @media de arriba: la
+ * media query no anade especificidad, asi que `.paso__cab { display: flex }` de mas
+ * abajo la ganaba. Es exactamente el fallo que tuvo esta seccion la primera vez.
+ */
+@media (min-width: 880px) {
+  .paso__cab { display: block; }
+  .paso__n { margin-bottom: var(--e3); }
+}
+
+@media (max-width: 879px) {
+  /* En móvil la línea de tiempo se pone vertical: es la forma natural de leer
+     cuatro pasos en una columna, y ahorra el salto de mirada. */
+  .pasos { gap: 0; }
+  .pasos::before {
+    content: '';
+    position: absolute;
+    left: 15px; top: 6px;
+    width: 1px; height: calc(100% - 46px);
+    background: linear-gradient(180deg, var(--amarillo-logo), var(--linea) 30%, var(--linea) 70%, transparent);
+  }
+  .paso { padding-left: 52px; padding-bottom: 28px; }
+  .paso:last-child { padding-bottom: 0; }
+  .paso__cab { margin-bottom: var(--e2); }
+  .paso__n { position: absolute; left: 0; top: 0; }
+}
+
+/* --------------------------------------------------------- banda de límites */
+
+/*
+ * La única banda a sangre de la página, y a propósito: «lo que nunca va a hacer»
+ * es lo primero que pregunta quien va a pegar su clave API en un programa que no
+ * conoce. No hace falta `100vw` ni márgenes negativos: el fondo va en la <section>
+ * y el contenido sigue dentro de .contenedor.
+ */
+.banda {
+  background: var(--marco);
+  border-block: 1px solid var(--linea);
+  padding-block: clamp(64px, 3rem + 5vw, 112px);
+}
+.banda__cab { max-width: 40rem; margin-inline: auto; text-align: center; }
+.banda__cab .rotulo { justify-content: center; }
+.banda__cab .rotulo i { display: none; }   /* centrado, el filete sobra */
+.banda__cab .intro { margin-inline: auto; }
+.banda__escudo { color: var(--amarillo-logo); display: block; margin: 0 auto var(--e5); }
+.banda__escudo.i { width: 28px; height: 28px; }
+
+.limite { display: grid; grid-template-columns: 24px 1fr; gap: 14px; align-items: start; }
+.limite__cab { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-bottom: var(--e2); }
+.limite__cab h3 { font-size: 17px; font-weight: 600; margin: 0; }
+.limite > .i { width: 22px; height: 22px; margin-top: 2px; }
+.limite--no > .i { color: var(--rojo); }
+.limite--si > .i { color: var(--verde); }
+.limite p { font-size: var(--t-celda); color: var(--texto-2); margin: 0; }
+@media (max-width: 520px) {
+  /* El chip sale de la línea del título y se pone encima: si no, «Nunca libera
+     cripto.» y la etiqueta se pelean por el mismo renglón. */
+  .limite__cab { flex-direction: column; align-items: flex-start; }
+  .limite__cab .chip { order: -1; }
+}
+
+/* --------------------------------------------------------------------- precio */
+
+.precio__rejilla { display: grid; gap: var(--e8); align-items: start; }
+@media (min-width: 960px) { .precio__rejilla { grid-template-columns: 1.15fr 1fr; gap: var(--e9); } }
+
+.ficha { position: relative; max-width: 560px; }
+/* Leyenda montada sobre el borde superior, como el rótulo de un instrumento. */
+.ficha__leyenda {
+  position: absolute;
+  top: -8px; left: 24px;
+  z-index: 2;
+  background: var(--fondo);
+  padding-inline: var(--e2);
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--amarillo-logo);
+}
+.ficha__cab {
+  padding: 28px 28px 24px;
+  background: linear-gradient(180deg, #171b21, #0f1216);
+  border-bottom: 1px solid var(--linea);
+}
+.ficha__cifra {
+  font: 500 var(--t-precio)/1 var(--mono);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+.ficha__unidad { display: block; margin-top: var(--e2); font-size: 15px; color: var(--texto-3); }
+
+/* Las condiciones como una tabla de contrato, no como una lista de ventajas. */
+.ficha dl { margin: 0; }
+.ficha__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--e4);
+  padding: 14px 28px;
+  border-top: 1px solid var(--linea);
+  font-size: 15px;
+}
+.ficha__fila:first-child { border-top: 0; }
+.ficha__fila dt { color: var(--texto-3); }
+.ficha__fila dd { margin: 0; color: var(--texto); font-weight: 600; text-align: right; max-width: 62%; }
+.ficha__pie { padding: var(--e5) 28px 28px; }
+
+.refuerzos { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--e5); }
+.refuerzos li { display: grid; grid-template-columns: 18px 1fr; gap: var(--e3); align-items: start; color: var(--texto-2); }
+.refuerzos .i { width: 18px; height: 18px; color: var(--verde); margin-top: 4px; }
+
+/* ------------------------------------------------------------------------ faq */
+
+/*
+ * Alineado a la izquierda como todo lo demas. Centrado, el panel arrancaba 160px a
+ * la derecha del h2 de su propia seccion y las dos piezas parecian de paginas
+ * distintas. Aqui manda la columna, no el centro.
+ */
+.faq { max-width: 860px; }
+/*
+ * `padding: 0` porque `.faq details` es hijo de `.panel` y ya recibe el relleno de
+ * celda; el <summary> pone el suyo encima. Sumados daban filas de 116px de alto para
+ * una linea de texto.
+ */
+.faq details { border-top: 1px solid var(--linea); padding: 0; }
+.faq details:first-of-type { border-top: 0; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 20px var(--e6);
+  font-size: 17px;
+  font-weight: 600;
+  min-height: 56px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary > span { min-width: 0; }
+/*
+ * Cheurón en CSS y no un carácter «+» (que cambia de ancho entre fuentes y baila al
+ * abrir) ni un SVG (que el conmutador de idioma podría borrar si algún día alguien
+ * lo mete por descuido dentro del span traducido).
+ */
+.faq summary::after {
+  content: '';
+  width: 9px; height: 9px;
+  border-right: 1.6px solid var(--texto-3);
+  border-bottom: 1.6px solid var(--texto-3);
+  transform: rotate(45deg);
+  margin-top: -4px;
+  flex: none;
+  transition: transform 220ms var(--sal), border-color 220ms var(--rap);
+}
+.faq details[open] summary::after {
+  transform: rotate(-135deg);
+  margin-top: 3px;
+  border-color: var(--amarillo-logo);
+}
+/* Abre instantáneo a propósito: animar la altura recalcula la maqueta en cada frame. */
+.faq details p { color: var(--texto-2); margin: 0; padding: 0 var(--e6) 22px; font-size: var(--t-celda); max-width: 46rem; }
+
+/* ---------------------------------------------------------------------- legal */
+
+.legal { padding: var(--e8) 0 var(--e4); max-width: 820px; }
+.legal h1 { font-size: clamp(1.9rem, 4vw, 2.75rem); margin-bottom: var(--e2); }
+.legal__fecha { color: var(--texto-3); font: 500 var(--t-micro)/1 var(--mono); margin: 0 0 var(--e7); }
+.legal h2 { font-size: 1.25rem; margin: var(--e7) 0 var(--e3); letter-spacing: -0.02em; }
+.legal p, .legal li { color: var(--texto-2); }
+.legal ul { padding-left: var(--e5); }
+.legal li { margin-bottom: var(--e2); }
+.legal__volver { color: var(--texto-3); font-size: var(--t-micro); display: inline-block; margin-bottom: var(--e6); }
+.legal__aviso {
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-left: 2px solid var(--amarillo);
+  border-radius: var(--r-md);
+  padding: var(--e4) var(--e5);
+  margin: var(--e6) 0;
+}
+.legal__aviso p { margin: 0; color: var(--texto); }
+
+/* ------------------------------------------------------------------------ pie */
+
+.pie { background: var(--marco); padding-bottom: calc(var(--e7) + env(safe-area-inset-bottom)); }
+/*
+ * Filete degradado en vez de un borde recto: cierra la página sin cortarla de lado a
+ * lado. Va como PRIMER hijo del <footer> y a sangre, por eso el relleno superior lo
+ * pone `.pie__dentro` y no `.pie`: con `padding-block` en el footer, el filete
+ * quedaría flotando 48px por debajo del canto.
+ */
+.pie__filete { height: 1px; background: linear-gradient(90deg, transparent, var(--linea) 12%, var(--linea) 88%, transparent); }
+.pie__dentro { padding-top: var(--e8); }
+.pie__rejilla { display: grid; gap: 0; }
+@media (min-width: 900px) { .pie__rejilla { grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--e7); } }
+.pie__grupo { padding-block: var(--e6); border-top: 1px solid var(--linea); }
+.pie__grupo:first-child { border-top: 0; padding-top: 0; }
+@media (min-width: 900px) { .pie__grupo { border-top: 0; padding-block: 0; } }
+/* Acotado a `.pie__grupo` a proposito: como `.pie p` ganaba en especificidad
+   (clase + elemento) a `.pie__descargo` (clase sola), el descargo legal se
+   quedaba en 26rem en vez de 46 y salia como una columna estrecha y rara. */
+.pie__grupo p { color: var(--texto-2); font-size: 15px; margin: var(--e3) 0 0; max-width: 26rem; }
+.pie h4 {
+  font: 500 var(--t-mono)/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  margin: 0 0 var(--e2);
+}
+.pie ul { list-style: none; margin: 0; padding: 0; }
+.pie ul a {
+  color: var(--texto-2);
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  padding-block: 12px;   /* 21 + 24 = 45px de diana táctil */
+}
+.pie ul a:hover { color: var(--texto); }
+.pie ul .i { width: 16px; height: 16px; color: var(--texto-3); }
+
+.pie__abajo {
+  border-top: 1px solid var(--linea);
+  margin-top: var(--e7);
+  padding-top: var(--e6);
+  color: var(--texto-3);
+  font: 500 var(--t-micro)/1.5 var(--mono);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e4);
+  justify-content: space-between;
+  align-items: center;
+}
+.pie__idioma { display: inline-flex; align-items: center; gap: var(--e3); color: var(--texto-3); }
+.pie__idioma .i { width: 18px; height: 18px; }
+/* Solo en privacy/terms/404, que no tienen las cuatro columnas del pie de portada. */
+.pie__enlaces { font-size: 15px; margin: var(--e5) 0 0; }
+.pie__enlaces a { color: var(--texto-2); padding-block: 12px; display: inline-block; }
+
+/*
+ * El descargo de Binance, como nota al pie de un documento. En cuerpo pequeño pero
+ * NO escondido: esta app usa la API de Binance y no tiene ninguna relación con
+ * Binance, y decirlo evita que alguien crea que compra un producto oficial.
+ */
+.pie__descargo {
+  position: relative;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px 16px 14px 30px;
+  font-size: var(--t-micro);
+  line-height: 1.6;
+  color: var(--texto-3);
+  max-width: 46rem;
+  margin-top: var(--e5);
+}
+.pie__descargo::before {
+  content: '*';
+  position: absolute;
+  left: 14px; top: 13px;
+  color: var(--amarillo-logo);
+  font-family: var(--mono);
+}
+
+/* ------------------------------------------------------------------ movimiento */
+
+/*
+ * Revelado al entrar en pantalla, sin una sola línea de JavaScript nuevo:
+ * `animation-timeline: view()` lo hace el navegador.
+ *
+ * Va dentro de @supports Y dentro de no-preference a propósito. Este proyecto ya
+ * tiene tres causas documentadas de «pantalla en blanco silenciosa»; un revelado
+ * con `opacity: 0` de partida y un observador de JavaScript sería la cuarta: si el
+ * observador no arranca, el contenido se queda invisible y no hay ningún error en
+ * consola. Así, un navegador sin soporte simplemente enseña la página quieta, que
+ * es el peor caso aceptable.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+@keyframes revelar {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-revelar] {
+      animation: revelar both;
+      animation-timeline: view();
+      /* `entry 0% → entry 45%`: termina cuando el 45 % del elemento ha entrado, que
+         siempre ocurre. Un rango tipo `cover 34%` puede no alcanzarse nunca en el
+         último bloque del documento y dejarlo clavado en opacity 0. */
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+/* ---------- ÚLTIMO BLOQUE DEL FICHERO. No mover de aquí. ------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  html { scroll-behavior: auto !important; }
+  [data-revelar] { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+
+/* --------------------------------------------------------- pantallas estrechas */
+
+/*
+ * Se van los enlaces de sección y se queda lo que hace falta.
+ *
+ * Medido en su día a 559 px: «What it does» se partía en dos líneas y el conmutador
+ * EN/ES quedaba cortado por el borde. Los enlaces del menú son atajos a secciones
+ * que están justo debajo —se llega bajando—, pero el conmutador de idioma no tiene
+ * sustituto: si no cabe, el visitante que no lee inglés no puede cambiarlo.
+ */
+@media (max-width: 800px) {
+  .cabecera__nav { display: none; }
+}
+@media (max-width: 640px) {
+  .marca { font-size: 15px; }
+  .marca img { width: 24px; height: 24px; }
+  .acciones .boton { width: 100%; max-width: 340px; }
+  .lamina { padding: 6px; box-shadow: inset 0 1px 0 var(--brillo), 0 30px 60px -40px #000, 0 0 50px 12px rgba(252, 213, 53, 0.05); }
+  .lamina::after { inset: 6px; }
+  .ficha__cab { padding: 26px 20px 22px; }
+  .ficha__fila { padding: 13px 20px; }
+  .ficha__pie { padding: var(--e5) 20px 24px; }
+  .ficha__leyenda { left: 16px; }
+  .faq summary { padding: 18px; font-size: 16px; }
+  .faq details p { padding: 0 18px 20px; }
+  .panel > * { padding: var(--e5) var(--e4); }
+  .maqueta__cuerpo { padding: var(--e3); }
+  .pie__abajo { flex-direction: column-reverse; align-items: flex-start; gap: var(--e3); }
+}
