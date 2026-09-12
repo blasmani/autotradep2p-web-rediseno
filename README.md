@@ -1,22 +1,21 @@
-# AutoTrade P2P — sitio web actual, listo para una propuesta de rediseño
+# AutoTrade P2P — sitio web premium
 
-Este repositorio es una **copia exacta del sitio público <https://autotradep2p.com/>** tal como
-está en producción el 2026-09-12, más este documento. Existe para una sola cosa: que otra
-inteligencia artificial —o cualquier diseñador— pueda proponer un **diseño premium nuevo** de
-la página con toda la información delante, sin tocar el sitio que está en vivo.
+Este repositorio contiene el rediseño estático premium de la portada de AutoTrade P2P. Está
+hecho para GitHub Pages: no necesita compilación, dependencias ni variables de entorno.
 
-La decisión de adoptar o no la propuesta la toma el dueño después, viéndola. **Nada de lo que
-se haga aquí se publica solo.**
+La dirección visual es una mesa de operaciones sobria: azul tinta, dorado apagado y jerarquía
+editorial. Conserva las afirmaciones verificadas del sitio original, los dos idiomas y las dos
+versiones del producto (web disponible y Windows aún en certificación).
 
 ## Qué hay dentro
 
 | Fichero | Qué es |
 |---|---|
-| `index.html` | La portada, tal cual está en vivo. Todo el texto en inglés y español dentro del mismo fichero (`data-en` / `data-es`) |
+| `index.html` | La portada rediseñada. Todo el texto en inglés y español dentro del mismo fichero (`data-en` / `data-es`) |
 | `privacy.html` | Política de privacidad (EN/ES) |
 | `terms.html` | Términos y condiciones (EN/ES) |
 | `404.html` | Página de no encontrado |
-| `assets/styles.css` | Los estilos actuales, con la paleta medida sobre el Portal del Comerciante de Binance |
+| `assets/styles.css` | Sistema visual premium: paleta, composición y diseño responsive |
 | `assets/idioma.js` | El conmutador EN/ES: pinta `data-en` o `data-es` en cada elemento y recuerda la elección |
 | `assets/hero.jpg` | La ilustración de la portada (1066×896) |
 | `assets/icono.png` | El icono de la app: favicon y pie. **En la cabecera ya no va** |
@@ -42,13 +41,7 @@ entra con Google, disponible ya) y la **app de Windows** (Microsoft Store, todo 
 usuario, todavía en certificación). Precio: **30 USDT al mes**, con siete días de prueba. Soporte
 por Telegram (`t.me/AutoTradeP2P`).
 
-## Qué se pide a quien haga la propuesta
-
-Un **diseño nuevo, premium, de la portada** (`index.html`) y, si quiere, de las dos páginas
-legales, entregado como lo que ya es este sitio: **HTML, CSS y JavaScript estáticos, sin
-proceso de build**, que se puedan servir tal cual desde GitHub Pages. Idealmente en este mismo
-repositorio, en una rama o carpeta aparte (`propuesta/`), sin borrar la versión actual, para
-poder compararlas.
+## Criterios que conserva el rediseño
 
 ### Lo que hay que conservar
 
