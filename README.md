@@ -10,12 +10,18 @@ se haga aquí se publica solo.**
 
 ## La propuesta: `propuesta/` («Marino sobre hielo», 2026-09-14)
 
-Las dos versiones conviven en este repositorio y se ven en GitHub Pages:
+Las tres versiones conviven en este repositorio y se ven en GitHub Pages:
 
 | | Dónde |
 |---|---|
-| Sitio actual (copia) | <https://blasmani.github.io/autotradep2p-web-rediseno/> |
-| **Propuesta nueva** | <https://blasmani.github.io/autotradep2p-web-rediseno/propuesta/> |
+| Sitio actual (copia exacta, la raíz) | <https://blasmani.github.io/autotradep2p-web-rediseno/> |
+| **Propuesta nueva** («Marino sobre hielo») | <https://blasmani.github.io/autotradep2p-web-rediseno/propuesta/> |
+| El intento de la otra IA (2026-09-12, descartado por el dueño) | <https://blasmani.github.io/autotradep2p-web-rediseno/otra-propuesta/> |
+
+**La raíz vuelve a ser la copia exacta.** La otra IA no trabajó en una carpeta aparte: sobrescribió
+`assets/styles.css` de la raíz con su propuesta (marino con dorado, mismo HTML) y reescribió este
+README. El 2026-09-14 la raíz se devolvió al sitio en vivo tal cual (commit `2e44fa2`) y su intento
+se movió a `otra-propuesta/`, para que las tres se puedan poner una al lado de otra.
 
 `propuesta/` es un sitio completo y autónomo —portada, política de privacidad, términos, 404,
 su CSS y su JS— con **el mismo contenido** que el actual (las dos páginas legales tienen el
