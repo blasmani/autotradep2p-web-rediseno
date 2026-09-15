@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-en="Page not found — AutoTrade P2P" data-es="Página no encontrada — AutoTrade P2P">Page not found — AutoTrade P2P</title>
+<!--
+  Rutas RELATIVAS mientras la propuesta viva en propuesta/ (así se abre desde ahí). El día que
+  se adopte en autotradep2p.com hay que pasarlas a absolutas (/assets/…, href="/") como el
+  404.html en vivo: GitHub Pages sirve este fichero para CUALQUIER ruta inexistente, también
+  las anidadas, y desde /lo-que-sea/x las relativas no resuelven.
+-->
+<link rel="icon" href="assets/icono.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<main class="contenedor perdida">
+  <h1>404</h1>
+  <p data-en="That page does not exist." data-es="Esa página no existe.">That page does not exist.</p>
+  <p><a href="./" data-en="Back to home" data-es="Volver al inicio">Back to home</a></p>
+  <span class="idioma">
+    <button type="button" data-idioma="en" aria-pressed="true">EN</button>
+    <button type="button" data-idioma="es" aria-pressed="false">ES</button>
+  </span>
+</main>
+<script src="assets/idioma.js"></script>
+</body>
+</html>

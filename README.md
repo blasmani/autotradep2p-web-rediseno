@@ -1,21 +1,66 @@
-# AutoTrade P2P — sitio web premium
+# AutoTrade P2P — sitio web actual y propuesta de rediseño
 
-Este repositorio contiene el rediseño estático premium de la portada de AutoTrade P2P. Está
-hecho para GitHub Pages: no necesita compilación, dependencias ni variables de entorno.
+Este repositorio es una **copia exacta del sitio público <https://autotradep2p.com/>** tal como
+está en producción el 2026-09-12, más este documento. Existe para una sola cosa: que se pueda
+proponer un **diseño premium nuevo** de la página con toda la información delante, sin tocar
+el sitio que está en vivo.
 
-La dirección visual es una mesa de operaciones sobria: azul tinta, dorado apagado y jerarquía
-editorial. Conserva las afirmaciones verificadas del sitio original, los dos idiomas y las dos
-versiones del producto (web disponible y Windows aún en certificación).
+La decisión de adoptar o no la propuesta la toma el dueño después, viéndola. **Nada de lo que
+se haga aquí se publica solo.**
+
+## La propuesta: `propuesta/` («Marino sobre hielo», 2026-09-14)
+
+Las dos versiones conviven en este repositorio y se ven en GitHub Pages:
+
+| | Dónde |
+|---|---|
+| Sitio actual (copia) | <https://blasmani.github.io/autotradep2p-web-rediseno/> |
+| **Propuesta nueva** | <https://blasmani.github.io/autotradep2p-web-rediseno/propuesta/> |
+
+`propuesta/` es un sitio completo y autónomo —portada, política de privacidad, términos, 404,
+su CSS y su JS— con **el mismo contenido** que el actual (las dos páginas legales tienen el
+`<main>` idéntico, comprobado con `diff`) y un diseño distinto de arriba abajo:
+
+- **Lienzo claro gris frío (`#eef1f5`), tinta azul marino (`#0f1729`) y UN solo acento azul
+  (`#2f63e6`)**, que aparece solo donde se pulsa: botón primario, pastilla «Tuyo», riel de la
+  banda y anillo de foco. Ni el negro ni el amarillo de Binance del sitio actual.
+- **Islas blancas de radio grande** (36 px en escritorio, 20 px en móvil) sobre el lienzo, y
+  **una sola isla oscura** (`#0b1220`), la del motor de precios, para que el contraste ocurra
+  una vez.
+- **Instrument Sans + Geist Mono** (Google Fonts, dos familias): titular de 72 px en
+  escritorio y 40 px en móvil; rótulos mono de 12 px como suelo.
+- **La imagen es el producto**: la ilustración del robot se retira y la portada lleva dos
+  maquetas en HTML/CSS (el ranking con la banda de puestos y el chat de una orden). Hay
+  maquetas también del historial, de los disparadores, de la regla del motor, de tres
+  instantes del ranking y de los cuatro pasos. Todas se traducen con el conmutador, pesan cero
+  bytes y llevan el rótulo «Ilustración · datos de ejemplo». Los datos son ficticios: apodos
+  inventados, iniciales, métodos de pago genéricos, sin bancos ni nombres.
+- Secciones: portada → 01 Qué hace → 02 Motor de precios (isla oscura) → 03 Cómo funciona
+  (cuatro filas de libro mayor) → 04 Dos versiones → 05 Tres nunca, dos siempre → 06 Precio
+  (ficha tipo contrato) → 07 FAQ → cierre → pie.
+- **Nada rebota, nada se levanta al pasar el ratón, nada late en bucle.** El revelado al
+  hacer scroll es CSS puro (`animation-timeline: view()`), dentro de `@supports` y de
+  `prefers-reduced-motion`; el JS son 30 líneas (el filete de la cabecera al hacer scroll y
+  «solo una pregunta abierta» en el FAQ).
+- Móvil comprobado a 390 px en los dos idiomas: sin scroll lateral, dianas de 44 px, texto
+  mínimo 12 px; las anclas de la cabecera se van y quedan el conmutador EN/ES y el botón.
+
+Salió de un panel de tres direcciones de diseño (clara estilo Apple, marino oscuro tipo
+silver5ai.com y editorial sobre papel) juzgadas por tres revisores independientes, con las
+mejores ideas de las otras dos injertadas en la ganadora; después pasó una revisión adversaria
+de contenido, idiomas, accesibilidad, técnica y diseño.
+
+Las reglas del encargo de abajo siguen valiendo para cualquier cambio en `propuesta/`.
 
 ## Qué hay dentro
 
 | Fichero | Qué es |
 |---|---|
-| `index.html` | La portada rediseñada. Todo el texto en inglés y español dentro del mismo fichero (`data-en` / `data-es`) |
+| `index.html` | La portada, tal cual está en vivo. Todo el texto en inglés y español dentro del mismo fichero (`data-en` / `data-es`) |
 | `privacy.html` | Política de privacidad (EN/ES) |
 | `terms.html` | Términos y condiciones (EN/ES) |
 | `404.html` | Página de no encontrado |
-| `assets/styles.css` | Sistema visual premium: paleta, composición y diseño responsive |
+| `assets/styles.css` | Los estilos actuales, con la paleta medida sobre el Portal del Comerciante de Binance |
 | `assets/idioma.js` | El conmutador EN/ES: pinta `data-en` o `data-es` en cada elemento y recuerda la elección |
 | `assets/hero.jpg` | La ilustración de la portada (1066×896) |
 | `assets/icono.png` | El icono de la app: favicon y pie. **En la cabecera ya no va** |
@@ -41,7 +86,13 @@ entra con Google, disponible ya) y la **app de Windows** (Microsoft Store, todo 
 usuario, todavía en certificación). Precio: **30 USDT al mes**, con siete días de prueba. Soporte
 por Telegram (`t.me/AutoTradeP2P`).
 
-## Criterios que conserva el rediseño
+## Qué se pide a quien haga la propuesta
+
+Un **diseño nuevo, premium, de la portada** (`index.html`) y, si quiere, de las dos páginas
+legales, entregado como lo que ya es este sitio: **HTML, CSS y JavaScript estáticos, sin
+proceso de build**, que se puedan servir tal cual desde GitHub Pages. Idealmente en este mismo
+repositorio, en una rama o carpeta aparte (`propuesta/`), sin borrar la versión actual, para
+poder compararlas.
 
 ### Lo que hay que conservar
 
