@@ -8,6 +8,11 @@ el sitio que está en vivo.
 La decisión de adoptar o no la propuesta la toma el dueño después, viéndola. **Nada de lo que
 se haga aquí se publica solo.**
 
+> **Adoptada el 2026-09-15.** El dueño la vio y pidió *«reemplazar la página actual con el nuevo
+> diseño»*: `propuesta/` pasó tal cual al repositorio de producción (`PAGINA-WEB-DE-AUTOTRADE-P2P`)
+> y desde ese día es lo que sirve <https://autotradep2p.com/>. Este repositorio queda como
+> archivo de la comparación; la raíz sigue siendo la copia del sitio ANTERIOR.
+
 ## La propuesta: `propuesta/` («Marino sobre hielo», 2026-09-14)
 
 Las tres versiones conviven en este repositorio y se ven en GitHub Pages:
